@@ -88,8 +88,8 @@ function drawGlyph({ gl, resources, msdf }, char) {
 
 function update({ resources }) {
   mat4.identity(resources.matrices.get('model'))
-  mat4.translate(resources.matrices.get('model'), resources.matrices.get('model'), vec3.fromValues(400, 400, 0))
-  mat4.scale(resources.matrices.get('model'), resources.matrices.get('model'), vec3.fromValues(200, 200, 1))
+  mat4.translate(resources.matrices.get('model'), resources.matrices.get('model'), resources.data.get('position'))
+  mat4.scale(resources.matrices.get('model'), resources.matrices.get('model'), resources.data.get('scale'))
 
   mat4.identity(resources.matrices.get('view'))
   mat4.invert(resources.matrices.get('view'), resources.matrices.get('view'))
@@ -146,7 +146,8 @@ async function main() {
     framebuffers: new Map(),
     renderbuffers: new Map(),
     vertexArrays: new Map(),
-    matrices: new Map()
+    matrices: new Map(),
+    data: new Map()
   }
 
   const msdf = await loadMSDF('/msdf/Corben-Regular.json', '/msdf')
@@ -183,6 +184,36 @@ async function main() {
     render(frameContext)
     frameId = requestAnimationFrame(onFrame)
   }
+
+  resources.data.set('scale', vec3.fromValues(310, 300, 1))
+  window.addEventListener('wheel', (e) => {
+    e.preventDefault()
+    console.log(e)
+    if (e.deltaY > 0) {
+      vec3.multiply(
+        resources.data.get('scale'),
+        resources.data.get('scale'),
+        vec3.fromValues(0.5, 0.5, 1)
+      )
+    } else {
+      vec3.multiply(
+        resources.data.get('scale'),
+        resources.data.get('scale'),
+        vec3.fromValues(2, 2, 1)
+      )
+    }
+  })
+
+  resources.data.set('position', vec3.fromValues(400, 400, 0))
+  window.addEventListener('pointermove', (e) => {
+    if (e.pressure > 0) {
+      vec3.add(
+        resources.data.get('position'),
+        resources.data.get('position'),
+        vec3.fromValues(e.movementX, e.movementY, 0)
+      )
+    }
+  })
 
   frameId = requestAnimationFrame(onFrame)
 }
