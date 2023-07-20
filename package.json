@@ -1,0 +1,20 @@
+{
+  "name": "surrender",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "msdf": "msdf-bmfont -reuse -m 512,512 -f json -o public/msdf/Corben.png -s 32 -r 8 -p 1 -t msdf public/fonts/Corben-Regular.ttf",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^4.4.0"
+  },
+  "dependencies": {
+    "gl-matrix": "^3.4.3",
+    "msdf-bmfont-xml": "^2.7.0",
+    "vite-plugin-glsl": "^1.1.2"
+  }
+}
