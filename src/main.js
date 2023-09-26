@@ -150,7 +150,7 @@ async function main() {
     data: new Map()
   }
 
-  const msdf = await loadMSDF('/msdf/Corben-Regular.json', '/msdf')
+  const msdf = await loadMSDF(import.meta.env.BASE_URL + '/msdf/Corben-Regular.json', import.meta.env.BASE_URL + '/msdf')
   console.log(msdf)
 
   resources.matrices.set('projection',
